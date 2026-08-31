@@ -12,7 +12,7 @@ class Settings(BaseSettings):
     API_V1_STR: str = "/api/v1"
 
     PROJECT_NAME: str
-    DATABASE_URL: str
+    DATABASE_URL: PostgresDsn
 
     @field_validator("DATABASE_URL", mode="before")
     @classmethod
@@ -24,4 +24,4 @@ class Settings(BaseSettings):
         return database_url
 
 
-settings = Settings()
+settings = Settings()  # type: ignore[call-arg]
