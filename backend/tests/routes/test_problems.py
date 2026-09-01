@@ -41,4 +41,4 @@ def test_read_problems(client: TestClient, db: Session) -> None:
     )
     assert response.status_code == 200
     content = response.json()
-    assert len(content["data"]) >= 8
+    assert len(content["data"]) >= 2

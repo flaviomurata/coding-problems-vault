@@ -13,7 +13,7 @@ def create_random_problem(db: Session) -> Problem:
         if random_lower_string() < "m"
         else ProblemPlatform.hackerrank
     )
-    problem_id = random_integer(1, 4000)
+    problem_id = str(random_integer(1, 4000))
     url = f"https://{platform.value}.com/problems/{random_lower_string()}"
     difficulty = random.choice(["easy", "medium", "hard"])
     normalized_difficulty = random_integer(1, 10)

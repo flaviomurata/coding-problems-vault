@@ -34,5 +34,5 @@ def read_item(session: SessionDep, id: uuid.UUID) -> Any:
     """
     problem = session.get(Problem, id)
     if not problem:
-        raise HTTPException(status_code=404, detail="problem not found")
+        raise HTTPException(status_code=404, detail="Problem not found")
     return problem
