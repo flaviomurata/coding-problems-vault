@@ -27,7 +27,7 @@ class ProblemDifficulty(StrEnum):
 class ProblemBase(SQLModel):
     title: str = Field(min_length=1, max_length=200)
     platform: ProblemPlatform = Field(index=True)
-    problem_url: str = Field(min_length=1, max_length=2048)
+    url: str = Field(min_length=1, max_length=2048)
     problem_id: str | None = Field(default=None, min_length=1, max_length=100)
     difficulty: ProblemDifficulty = Field(index=True)
     normalized_difficulty: int | None = Field(
@@ -51,6 +51,11 @@ class ProblemBase(SQLModel):
         if not isinstance(value, str):
             return value
         return value.strip() or None
+
+
+# Properties to receive on item creation
+class ProblemCreate(ProblemBase):
+    pass
 
 
 # Database model
