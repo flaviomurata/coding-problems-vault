@@ -1,8 +1,9 @@
 import random
 
+from sqlmodel import Session
+
 from app import crud
 from app.models import Problem, ProblemCreate, ProblemPlatform
-from sqlmodel import Session
 from tests.utils.utils import random_integer, random_lower_string
 
 
