@@ -125,4 +125,25 @@ def test_update_problem_not_found(client: TestClient) -> None:
     )
     assert response.status_code == 404
     content = response.json()
-    assert content["detail"] == "problem not found"
+    assert content["detail"] == "Problem not found"
+
+
+def test_delete_problem(client: TestClient, db: Session) -> None:
+    problem = create_random_problem(db)
+    response = client.delete(
+        f"{settings.API_V1_STR}/problems/{problem.id}",
+    )
+    assert response.status_code == 200
+    content = response.json()
+    assert content["message"] == "Problem deleted successfully"
+
+
+def test_delete_problem_not_found(
+    client: TestClient,
+) -> None:
+    response = client.delete(
+        f"{settings.API_V1_STR}/problems/{uuid.uuid4()}",
+    )
+    assert response.status_code == 404
+    content = response.json()
+    assert content["detail"] == "Problem not found"

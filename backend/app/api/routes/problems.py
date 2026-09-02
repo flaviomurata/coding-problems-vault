@@ -6,6 +6,7 @@ from sqlmodel import col, func, select
 
 from app.api.deps import SessionDep
 from app.models import (
+    Message,
     Problem,
     ProblemCreate,
     ProblemPublic,
@@ -64,14 +65,27 @@ def update_item(
     problem_in: ProblemUpdate,
 ) -> Any:
     """
-    Update an problem.
+    Update a problem.
     """
     problem = session.get(Problem, id)
     if not problem:
-        raise HTTPException(status_code=404, detail="problem not found")
+        raise HTTPException(status_code=404, detail="Problem not found")
     update_dict = problem_in.model_dump(exclude_unset=True)
     problem.sqlmodel_update(update_dict)
     session.add(problem)
     session.commit()
     session.refresh(problem)
     return problem
+
+
+@router.delete("/{id}")
+def delete_item(session: SessionDep, id: uuid.UUID) -> Message:
+    """
+    Delete an item.
+    """
+    item = session.get(Problem, id)
+    if not item:
+        raise HTTPException(status_code=404, detail="Problem not found")
+    session.delete(item)
+    session.commit()
+    return Message(message="Problem deleted successfully")

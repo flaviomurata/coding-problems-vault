@@ -115,3 +115,8 @@ class ProblemPublic(ProblemBase):
 class ProblemsPublic(SQLModel):
     data: list[ProblemPublic]
     count: int
+
+
+# Generic message
+class Message(SQLModel):
+    message: str
