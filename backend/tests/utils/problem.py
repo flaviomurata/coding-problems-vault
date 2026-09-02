@@ -29,5 +29,6 @@ def create_random_problem(db: Session) -> Problem:
         normalized_difficulty=normalized_difficulty,
         simplified_statement=simplified_statement,
         notes=notes,
+        solution_url=f"https://github.com/user/{random_lower_string()}",
     )
     return crud.create_problem(session=db, problem_in=problem_in)

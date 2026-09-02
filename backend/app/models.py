@@ -58,6 +58,23 @@ class ProblemCreate(ProblemBase):
     pass
 
 
+class ProblemUpdate(SQLModel):
+    title: str | None = Field(default=None, min_length=1, max_length=200)
+    platform: ProblemPlatform | None = Field(default=None, index=True)
+    url: str | None = Field(default=None, min_length=1, max_length=2048)
+    problem_id: str | None = Field(default=None, min_length=1, max_length=100)
+    difficulty: ProblemDifficulty | None = Field(default=None, index=True)
+    normalized_difficulty: int | None = Field(
+        default=None,
+        ge=1,
+        le=10,
+        index=True,
+    )
+    simplified_statement: str | None = Field(default=None, max_length=10_000)
+    notes: str | None = Field(default=None, max_length=10_000)
+    solution_url: str | None = Field(default=None, max_length=2048)
+
+
 # Database model
 class Problem(ProblemBase, table=True):
     __table_args__: ClassVar[tuple[CheckConstraint | UniqueConstraint | Index, ...]] = (

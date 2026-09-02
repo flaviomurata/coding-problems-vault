@@ -5,7 +5,13 @@ from fastapi import APIRouter, HTTPException
 from sqlmodel import col, func, select
 
 from app.api.deps import SessionDep
-from app.models import Problem, ProblemCreate, ProblemPublic, ProblemsPublic
+from app.models import (
+    Problem,
+    ProblemCreate,
+    ProblemPublic,
+    ProblemsPublic,
+    ProblemUpdate,
+)
 
 router = APIRouter(prefix="/problems", tags=["problems"])
 
@@ -44,6 +50,27 @@ def create_problem(*, session: SessionDep, problem_in: ProblemCreate) -> Any:
     Create new problem.
     """
     problem = Problem.model_validate(problem_in)
+    session.add(problem)
+    session.commit()
+    session.refresh(problem)
+    return problem
+
+
+@router.put("/{id}", response_model=ProblemPublic)
+def update_item(
+    *,
+    session: SessionDep,
+    id: uuid.UUID,
+    problem_in: ProblemUpdate,
+) -> Any:
+    """
+    Update an problem.
+    """
+    problem = session.get(Problem, id)
+    if not problem:
+        raise HTTPException(status_code=404, detail="problem not found")
+    update_dict = problem_in.model_dump(exclude_unset=True)
+    problem.sqlmodel_update(update_dict)
     session.add(problem)
     session.commit()
     session.refresh(problem)
