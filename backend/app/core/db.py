@@ -2,7 +2,7 @@ from sqlmodel import create_engine
 
 from app.core.config import settings
 
-engine = create_engine(str(settings.DATABASE_URL))
+engine = create_engine(str(settings.DATABASE_URL), pool_pre_ping=True)
 
 
 # make sure all SQLModel models are imported (app.models) before initializing DB
