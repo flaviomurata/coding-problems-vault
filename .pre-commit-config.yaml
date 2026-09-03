@@ -24,6 +24,14 @@ repos:
         args: [--force-exclude]
   - repo: local
     hooks:
+      - id: local-biome-check
+        name: biome check
+        entry: npm run lint
+        language: system
+        types: [text]
+        files: ^frontend/
+        pass_filenames: false
+
       - id: local-ruff-check
         name: ruff check
         entry: uv run ruff check --fix --force-exclude --exit-non-zero-on-fix
