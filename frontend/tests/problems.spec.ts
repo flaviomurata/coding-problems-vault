@@ -51,7 +51,7 @@ test.describe("Problems management", () => {
     await page.getByLabel("Title").fill(problem.title)
     await page.getByLabel("Platform").selectOption(problem.platform)
     await page.getByLabel("URL").fill(problem.url)
-    await page.getByLabel("ID").fill(problem.id)
+    await page.getByLabel("Difficulty").selectOption(problem.difficulty)
     await page.getByRole("button", { name: "Submit" }).click()
 
     await expect(page.getByText("Problem added successfully")).toBeVisible()
@@ -76,21 +76,25 @@ test.describe("Problems management", () => {
   })
 
   test.describe("Edit and Delete", () => {
-    let problemTitle: string
+    let problem: ReturnType<typeof randomProblem>
 
     test.beforeEach(async ({ page }) => {
-      problemTitle = randomProblem().title
-
+      problem = randomProblem()
       await page.getByRole("button", { name: "Add Problem" }).click()
-      await page.getByLabel("Title").fill(problemTitle)
+      await page.getByLabel("Title").fill(problem.title)
+      await page.getByLabel("Platform").selectOption(problem.platform)
+      await page.getByLabel("URL").fill(problem.url)
+      await page.getByLabel("Difficulty").selectOption(problem.difficulty)
       await page.getByRole("button", { name: "Save" }).click()
       await expect(page.getByText("Problem created successfully")).toBeVisible()
       await expect(page.getByRole("dialog")).not.toBeVisible()
     })
 
     test("Edit a problem successfully", async ({ page }) => {
-      const itemRow = page.getByRole("row").filter({ hasText: problemTitle })
-      await itemRow.getByRole("button").last().click()
+      const problemRow = page
+        .getByRole("row")
+        .filter({ hasText: problem.title })
+      await problemRow.getByRole("button").last().click()
       await page.getByRole("menuitem", { name: "Edit Problem" }).click()
 
       const updatedTitle = randomProblem().title
@@ -102,7 +106,7 @@ test.describe("Problems management", () => {
     })
 
     test("Delete a problem successfully", async ({ page }) => {
-      const itemRow = page.getByRole("row").filter({ hasText: problemTitle })
+      const itemRow = page.getByRole("row").filter({ hasText: problem.title })
       await itemRow.getByRole("button").last().click()
       await page.getByRole("menuitem", { name: "Delete Problem" }).click()
 
@@ -111,7 +115,7 @@ test.describe("Problems management", () => {
       await expect(
         page.getByText("The item was deleted successfully"),
       ).toBeVisible()
-      await expect(page.getByText(problemTitle)).not.toBeVisible()
+      await expect(page.getByText(problem.title)).not.toBeVisible()
     })
   })
 })
