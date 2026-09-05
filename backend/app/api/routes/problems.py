@@ -35,7 +35,7 @@ def read_problems(
 
 
 @router.get("/{id}", response_model=ProblemPublic)
-def read_item(session: SessionDep, id: uuid.UUID) -> Any:
+def read_problem(session: SessionDep, id: uuid.UUID) -> Any:
     """
     Get problem by ID.
     """
@@ -58,7 +58,7 @@ def create_problem(*, session: SessionDep, problem_in: ProblemCreate) -> Any:
 
 
 @router.put("/{id}", response_model=ProblemPublic)
-def update_item(
+def update_problem(
     *,
     session: SessionDep,
     id: uuid.UUID,
@@ -79,7 +79,7 @@ def update_item(
 
 
 @router.delete("/{id}")
-def delete_item(session: SessionDep, id: uuid.UUID) -> Message:
+def delete_problem(session: SessionDep, id: uuid.UUID) -> Message:
     """
     Delete an item.
     """
