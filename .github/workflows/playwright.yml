@@ -46,6 +46,7 @@ jobs:
     timeout-minutes: 15
     env:
       PLAYWRIGHT_BASE_URL: http://127.0.0.1:8000
+      PLAYWRIGHT_SERVER_COMMAND: cd ../backend && uv run fastapi run --host 127.0.0.1 --port 8000
       VITE_API_URL: http://127.0.0.1:8000
     runs-on: ubuntu-latest
     strategy:
@@ -83,14 +84,12 @@ jobs:
       - name: Run alembic migration
         run: uv run bash scripts/prestart.sh
         working-directory: backend
-      - run: bun build
-      - name: Run backend server
-        run: uv run fastapi dev
-        working-directory: backend
+      - run: bun run build
       - name: Run Playwright tests
         run: bunx playwright test --fail-on-flaky-tests --trace=retain-on-failure --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
         working-directory: frontend
       - run: docker compose down -v --remove-orphans
+        if: ${{ always() }}
       - name: Upload blob report to GitHub Actions Artifacts
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
