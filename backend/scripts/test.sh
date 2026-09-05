@@ -3,6 +3,7 @@
 set -e
 set -x
 
-coverage run -m pytest tests/
+# Backend tests run without a frontend build.
+FASTAPI_ENV=development coverage run -m pytest tests/
 coverage report
 coverage html --title "${@-coverage}"
