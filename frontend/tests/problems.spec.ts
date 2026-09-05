@@ -1,4 +1,4 @@
-import test, { expect } from "@playwright/test"
+import { expect, test } from "./fixtures"
 import { randomProblem } from "./utils/random"
 
 test("Problems page is accessible and shows correct title", async ({
@@ -121,8 +121,6 @@ test.describe("Problems management", () => {
 })
 
 test.describe("Problems empty state", () => {
-  test.use({ storageState: { cookies: [], origins: [] } })
-
   test("Shows empty state message when no problems exist", async ({ page }) => {
     await page.goto("/problems")
 

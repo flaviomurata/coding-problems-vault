@@ -1,8 +1,8 @@
-export const randomProblem = () => {
+export const randomProblem = (): ProblemCreate => {
   const title = `Sample Problem ${Math.random().toString(36).substring(7)}`
   const platform = ["leetcode", "hackerrank"][Math.floor(Math.random() * 2)]
   const url = `https://${platform}.com/problem/${Math.floor(Math.random() * 1000)}/A`
-  const id = `${Math.floor(Math.random() * 1000)}`
+  const id = crypto.randomUUID()
   const difficulty = ["easy", "medium", "hard"][Math.floor(Math.random() * 3)]
   const normDifficulty = Math.floor(Math.random() * 10) + 1 // Random difficulty between 1 and 5
   const simplifiedProblemStatement = Math.random().toString(36).substring(7)
