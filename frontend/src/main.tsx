@@ -1,10 +1,18 @@
 import { StrictMode } from "react"
 import { createRoot } from "react-dom/client"
 import "./index.css"
+import {
+  MutationCache,
+  QueryCache,
+  QueryClient,
+  QueryClientProvider,
+} from "@tanstack/react-query"
+import { AxiosError } from "axios"
 import App from "./App.tsx"
+import { client } from "./client/client.gen"
 
 client.setConfig({
-  baseUrl: import.meta.env.VITE_API_URL ?? "",
+  baseURL: import.meta.env.VITE_API_URL ?? "",
 })
 
 const handleApiError = (error: Error) => {
